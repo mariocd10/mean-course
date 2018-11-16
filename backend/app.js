@@ -3,16 +3,22 @@ const express = require('express');
 // Express returns an app which is mostly middleware
 const app = express();
 
-// This functions uses middlware on our request
-app.use((req, res, next) => {
-  console.log('first middleware');
-  // If you execute then req will continue it's journey
-  next();
-});
+// First arg is the path to filter
+app.use('/api/posts', (req, res, next) => {
+  const posts = [{
+    id: 'awef434g3wq',
+    title: 'first post from server',
+    content: 'content from the server'
+  }, {
+    id: 'awasdfef434g3wq',
+    title: 'second post from server',
+    content: 'content'
+  }];
 
-app.use((req, res, next) => {
-  // Send back response
-  res.send('hello from express');
+  res.status(200).json({
+    message: 'Request successful!',
+    post: posts
+  });
 });
 
 // export the express app to be used by the server
