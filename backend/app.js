@@ -1,7 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 // Express returns an app which is mostly middleware
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended : false}));
 
 // We want to execute this middlware before every request
 app.use((req, res, next) => {
@@ -16,6 +20,15 @@ app.use((req, res, next) => {
     );
   next();
 });
+
+app.post("/api/posts", (req, res, next) => {
+  const post = req.body;
+  console.log(post);
+  // 201 resource code usually means successfully added new resource while 200 is just successful
+  res.status(201).json({
+    message: 'Post added successfully'
+  });
+})
 
 // First arg is the path to filter
 app.use('/api/posts', (req, res, next) => {
