@@ -31,7 +31,7 @@ app.post("/api/posts", (req, res, next) => {
 })
 
 // First arg is the path to filter
-app.use('/api/posts', (req, res, next) => {
+app.get('/api/posts', (req, res, next) => {
   const posts = [{
     id: 'awef434g3wq',
     title: 'first post from server',
