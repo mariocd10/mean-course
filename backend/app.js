@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const Post  = require('./models/post');
 
 // Express returns an app which is mostly middleware
 const app = express();
@@ -22,10 +23,12 @@ app.use((req, res, next) => {
 });
 
 app.post("/api/posts", (req, res, next) => {
-  const post = req.body;
+  const post = new Post({
+    title: req.body.title,
+    content: req.body.content
+  });
   console.log(post);
-  // 201 resource code usually means successfully added new resource while 200 is just successful
-  res.status(201).json({
+  res.status(201).json({ // 201 resource code usually means successfully added new resource while 200 is just successful
     message: 'Post added successfully'
   });
 })
