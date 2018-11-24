@@ -9,7 +9,7 @@ const config = require('./config')[env];
 // Express returns an app which is mostly middleware
 const app = express();
 
-mongoose.connect("mongodb+srv://"+config.database.user+":"+config.database.password+"@cluster0-2krgw.mongodb.net/test?retryWrites=true")
+mongoose.connect("mongodb+srv://"+config.database.user+":"+config.database.password+"@cluster0-2krgw.mongodb.net/"+config.database.db+"?retryWrites=true")
   .then(() => {
     console.log('Connected to the db');
   })
@@ -39,7 +39,7 @@ app.post("/api/posts", (req, res, next) => {
     title: req.body.title,
     content: req.body.content
   });
-  console.log(post);
+  post.save();
   res.status(201).json({ // 201 resource code usually means successfully added new resource while 200 is just successful
     message: 'Post added successfully'
   });
