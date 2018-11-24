@@ -1,9 +1,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Post  = require('./models/post');
+const mongoose = require('mongoose');
+
+const env = process.env.NODE_ENV || 'development';
+const config = require('./config')[env];
 
 // Express returns an app which is mostly middleware
 const app = express();
+
+mongoose.connect("mongodb+srv://"+config.database.user+":"+config.database.password+"@cluster0-2krgw.mongodb.net/test?retryWrites=true")
+  .then(() => {
+    console.log('Connected to the db');
+  })
+  .catch(() => {
+    console.log('Connection failed');
+  })
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : false}));
