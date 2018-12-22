@@ -9,8 +9,11 @@ import { Post } from './post.model';
 export class PostsService {
   private posts: Post[] = [];
   private postsUpdated = new Subject<Post[]>();
-
   constructor(private http: HttpClient) {}
+
+  getPost(id: string) {
+    return {...this.posts.find(p => p.id === id)};
+  }
 
   getPosts() {
     this.http
@@ -30,6 +33,12 @@ export class PostsService {
         this.posts = transformedPosts;
         this.postsUpdated.next([...this.posts]);
       });
+  }
+
+  updatePost(id: string, title: string, content: string) {
+    const post: Post = {id: id, title: title, content: content };
+    this.http.put('http://localhost:3000/api/posts/' + id, post)
+      .subscribe(response => console.log(response));
   }
 
   getPostUpdateListener() {
