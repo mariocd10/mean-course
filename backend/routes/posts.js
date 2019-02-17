@@ -47,9 +47,11 @@ router.post('' , multer({storage: storage}).single('image'), (req, res, next) =>
 });
 
 router.get('',(req, res, next) => {
+  // TODO: why + is prefixed
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
   const postQuery = Post.find();
+  let fetchedPosts;
 
   if(pageSize && currentPage){
     postQuery
@@ -59,11 +61,17 @@ router.get('',(req, res, next) => {
 
   postQuery.find()
     .then(documents => {
+      // If return in THEN, it will create a new promise and listen to it's result automatically
+      fetchedPosts = documents;
+      return Post.count();
+    }) // Chaining
+    .then(count => {
       res.status(200).json({
-        message: 'Posts fetched successfully!',
-        posts: documents
+        message: "Posts fetched successfully",
+        posts: fetchedPosts,
+        maxPosts: count
       });
-    });
+    })
 
 });
 
